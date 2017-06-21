@@ -53,18 +53,21 @@ if ! DEBOOTSTRAP_PATH=`singularity_which debootstrap`; then
     exit 1
 fi
 
-ARCH=`uname -m`
-
-if [ "$ARCH" == "x86_64" ]; then
-    ARCH=amd64
-elif [ "$ARCH" == "ppc64le" ]; then
-    ARCH=ppc64el
-elif [ "$ARCH" == "aarch64" ]; then
-    ARCH=arm64
-elif [ "$ARCH" == "armv6l" ]; then
-    ARCH=armhf
-elif [ "$ARCH" == "armv7l" ]; then
-    ARCH=armhf
+if [ -n "${ARCH:-}" ]; then
+    ARCH=`echo ${ARCH:-} | sed -e 's/\s//g'`
+else
+    ARCH=`uname -m`
+    if [ "$ARCH" == "x86_64" ]; then
+        ARCH=amd64
+    elif [ "$ARCH" == "ppc64le" ]; then
+        ARCH=ppc64el
+    elif [ "$ARCH" == "aarch64" ]; then
+        ARCH=arm64
+    elif [ "$ARCH" == "armv6l" ]; then
+        ARCH=armhf
+    elif [ "$ARCH" == "armv7l" ]; then
+        ARCH=armhf
+    fi
 fi
 
 
